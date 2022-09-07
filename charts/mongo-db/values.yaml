@@ -1,0 +1,13 @@
+mongodb:
+  # sets the service name to mongodb
+  fullnameOverride: mongodb
+  # no need on the demo
+  auth:
+    enabled: false
+
+  # one instance is enough for testing
+  architecture: standalone
+
+  # no persistence required for testing
+  persistence:
+    enabled: false

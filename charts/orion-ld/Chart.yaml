@@ -1,0 +1,9 @@
+apiVersion: v2
+name: orion
+version: 1.0.9
+appVersion: 1.1.0
+
+dependencies:
+  - name: orion
+    version: 1.0.9
+    repository: https://fiware.github.io/helm-charts

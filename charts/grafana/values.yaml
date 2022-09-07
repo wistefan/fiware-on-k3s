@@ -1,0 +1,23 @@
+grafana:
+  # fine for demo
+  adminUser: fiwareAdmin
+  adminPassword: fiwareAdmin
+
+  # already configure the prometheus as a datasource
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://prometheus
+          access: proxy
+          isDefault: true
+
+  # make it available under the grafana default
+  service:
+    type: LoadBalancer
+    port: 3000
+
+  testFramework:
+    enabled: false

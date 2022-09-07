@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.fiware.k3s</groupId>
+    <artifactId>demo</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <version.org.apache.maven.plugins.maven-surefire-plugin>3.0.0-M5</version.org.apache.maven.plugins.maven-surefire-plugin>
+        <version.io.kokuwa.maven.k3s-plugin>0.6.1</version.io.kokuwa.maven.k3s-plugin>
+        <version.io.kokuwa.helm-maven-plugin>6.3.0</version.io.kokuwa.helm-maven-plugin>
+
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- copy the charts to the target repo to keep the sources clean -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/charts</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/charts</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- render the charts -->
+            <plugin>
+                <groupId>io.kokuwa.maven</groupId>
+                <artifactId>helm-maven-plugin</artifactId>
+                <version>${version.io.kokuwa.helm-maven-plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>init</goal>
+                            <goal>dependency-build</goal>
+                            <goal>template</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                        <configuration>
+                            <chartDirectory>${project.build.directory}/charts/</chartDirectory>
+                            <skipTemplate>false</skipTemplate>
+                            <additionalArguments>--output-dir ${project.build.directory}/k3s/</additionalArguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.kokuwa.maven</groupId>
+                <artifactId>k3s-maven-plugin</artifactId>
+                <version>${version.io.kokuwa.maven.k3s-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>create</goal>
+                            <goal>start</goal>
+                            <goal>kubectl</goal>
+                        </goals>
+                        <configuration>
+                            <streamLogs>true</streamLogs>
+                            <manifests>${project.build.directory}/k3s/</manifests>
+                            <command>kubectl apply -R -f .</command>
+                            <portBindings>
+                                <!-- orion-ld -->
+                                <portBinding>1026:1026</portBinding>
+                                <!-- grafana -->
+                                <portBinding>3000:3000</portBinding>
+                            </portBindings>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

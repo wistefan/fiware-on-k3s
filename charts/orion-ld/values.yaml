@@ -1,0 +1,20 @@
+orion:
+
+  # loadbalancer service is required to reach orion on the localhost through k3s
+  service:
+    type: LoadBalancer
+    port: 1026
+
+  broker:
+    # mongo db connection, no auth in demo
+    db:
+      hosts:
+        - mongodb
+      name: orion
+
+  # do not deploy the dependent mongo, use the one from the mongo-db chart instead
+  mongo:
+    enabled: false
+  # test do not properly run with plain kubctl apply thus we skip them here.
+  test:
+    enabled: false
