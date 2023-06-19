@@ -35,6 +35,8 @@ kong:
     installCRDs: false
   
   proxy:
+    http:
+      servicePort: 6060
     enabled: true
     tls:
       enabled: false

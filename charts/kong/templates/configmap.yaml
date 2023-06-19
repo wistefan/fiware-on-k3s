@@ -25,40 +25,6 @@ data:
             config: 
               minute: 3
 
-      # keyrock example
-      - host: "fiware-orion-ld"
-        name: "orion-keyrock"
-        port: 1026
-        protocol: http
-
-        routes:
-          - name: orion-keyrock
-            paths:
-              - /keyrock
-            strip_path: true
-
-        plugins:
-          - name: prometheus
-            config:
-              per_consumer: true
-
-          - name: rate-limiting
-            config: 
-              minute: 30
-
-          - name: pep-plugin
-            config:
-              authorizationendpointtype: Keyrock
-              authorizationendpointaddress: https://keyrock.fiware.dev/user
-              keyrockappid: 0c47148c-50e7-4866-ac0d-941ef638efd7
-
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
-
       # keycloak example
       - host: "fiware-orion-ld"
         name: "orion-keycloak"

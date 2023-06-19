@@ -83,6 +83,10 @@
                                 <portBinding>1026:1026</portBinding>
                                 <!-- grafana -->
                                 <portBinding>3000:3000</portBinding>
+                                <!-- keycloak -->
+                                <portBinding>7070:7070</portBinding>
+                                <!-- kong -->
+                                <portBinding>6060:6060</portBinding>
                             </portBindings>
                         </configuration>
                     </execution>
