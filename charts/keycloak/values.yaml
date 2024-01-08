@@ -1,0 +1,72 @@
+realm:
+  orionPep:
+    baseUrl: http://localhost:7070
+    adminUrl: http://localhost:7070
+    redirectUris:
+      - http://localhost:7070
+    webOrigins:
+      - http://localhost:7070
+
+keycloak:
+  service:
+    ports:
+      http: 7070
+  replicaCount: 1
+  auth:
+    adminUser: fiwareAdmin
+    adminPassword: fiwareAdmin
+  
+  keycloakConfigCli:
+    enabled: true
+    extraEnvVars:
+      - name: IMPORT_FILES_LOCATIONS
+        value: "/config/*"
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+    command: 
+      - java
+      - -jar
+      - /opt/bitnami/keycloak-config-cli/keycloak-config-cli-20.0.1.jar
+    existingConfigmap: keycloak-realm
+  
+  extraEnvVars:
+  - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+    value: "true"
+  - name: KEYCLOAK_LOG_LEVEL
+    value: INFO
+  
+  extraVolumeMounts:
+    - name: profiles
+      mountPath: /opt/bitnami/keycloak/conf/profile.properties
+      subPath: profile.properties
+
+  extraVolumes:
+    - name: profiles
+      configMap:
+        name: keycloak-profile
+  
+  postgresql:
+    auth:
+      username: bn_keycloak
+      password: secretpassword
+      replicationPassword: secretreplicationpassword
+    primary:
+      persistence:
+        enabled: false
+      podSecurityContext:
+        enabled: false
+      containerSecurityContext:
+        enabled: false
+    architecture: replication
+    readReplicas:
+      replicaCount: 1
+      podSecurityContext:
+        enabled: false
+      containerSecurityContext:
+        enabled: false
+    audit:
+      clientMinMessages: warning
+    metrics:
+      enabled: false

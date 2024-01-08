@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <version.org.apache.maven.plugins.maven-surefire-plugin>3.0.0-M5</version.org.apache.maven.plugins.maven-surefire-plugin>
-        <version.io.kokuwa.maven.k3s-plugin>0.6.1</version.io.kokuwa.maven.k3s-plugin>
+        <version.io.kokuwa.maven.k3s-plugin>1.0.0</version.io.kokuwa.maven.k3s-plugin>
         <version.io.kokuwa.helm-maven-plugin>6.3.0</version.io.kokuwa.helm-maven-plugin>
 
     </properties>
@@ -71,9 +71,8 @@
                         <id>default</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>create</goal>
-                            <goal>start</goal>
-                            <goal>kubectl</goal>
+                            <goal>run</goal>
+                            <goal>apply</goal>
                         </goals>
                         <configuration>
                             <streamLogs>true</streamLogs>
@@ -84,6 +83,10 @@
                                 <portBinding>1026:1026</portBinding>
                                 <!-- grafana -->
                                 <portBinding>3000:3000</portBinding>
+                                <!-- keycloak -->
+                                <portBinding>7070:7070</portBinding>
+                                <!-- kong -->
+                                <portBinding>6060:6060</portBinding>
                             </portBindings>
                         </configuration>
                     </execution>

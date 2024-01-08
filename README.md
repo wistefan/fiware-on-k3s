@@ -13,7 +13,7 @@ The rendered templates can be found under the ```target/k3s``` folder.
 ## Run
 > To use this project, [maven](https://maven.apache.org/install.html) needs to be installed first.
 
-The plugins are usually used in test-environments, therefor they are bound to the test-phases inside the [maven-lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html):
+The plugins are usually used in test-environments, therefore they are bound to the test-phases inside the [maven-lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html):
 - ```validate``` - copy the charts 
 - ```test-compile``` - build and template the charts
 - ```pre-integration-test``` - start k3s and install the components
@@ -22,9 +22,11 @@ To run the full setup, use ```mvn clean integration-test```
 
 ## Access the services
 
-Currently, 2 services are available at localhost after running the setup:
+The followijng services are available at localhost after running the setup:
 - [Orion-LD](https://github.com/FIWARE/context.Orion-LD) and the [NGSI-LD Api](https://docbox.etsi.org/isg/cim/open/Latest%20release%20NGSI-LD%20API%20for%20public%20comment.pdf) at ```http://localhost:1026```
 - [Grafana](https://grafana.com/) at ```http://localhost:3000```, username: fiwareAdmin & password: fiwareAdmin
+- [Kong](https://konghq.com) at ```http://localhost:6060``` as secured entrypoint to the broker
+- [Keycloak](https://www.keycloak.org/) at ```http://localhost:70707``` as the idm to be used with kong
 
 ## Stopping it
 
